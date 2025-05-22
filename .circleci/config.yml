@@ -1,0 +1,22 @@
+version: 2.1
+orbs:
+  coveralls: coveralls/coveralls@2.2.5
+jobs:
+    test:
+        docker:
+            - image: cimg/node:22.15.0
+        steps:
+            - checkout
+            - run:
+                  name: Install dependencies
+                  command: npm ci
+            - run:
+                  name: Run test with coverage
+                  command: npm run test:coverage
+
+            - coveralls/upload
+
+workflows:
+  test-and-coveralls:
+    jobs:
+      - test
